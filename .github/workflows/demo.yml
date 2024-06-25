@@ -15,6 +15,7 @@ jobs:
         run: npm run lint
       - name: Test code
         run: npm run test
+
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -25,17 +26,18 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
-      - name: Uploaded artifacts
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: dist-files
           path: dist
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Get build artifacts
-      - uses: actions/upload-artifact@v3
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
         with:
           name: dist-files
       - name: Deploy
